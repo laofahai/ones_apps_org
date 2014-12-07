@@ -39,7 +39,8 @@ class FinanceReceiveConfirmReceive extends WorkflowAbstract {
             "account_id" => $accountId,
             "amount" => $amount,
             "type" => 1,
-            "type_id" => $plan["type_id"]
+            "type_id" => $plan["type_id"],
+            "source_id" => $this->mainrowId
         );
         $recordModel = D("FinanceRecord");
         $recordId = $recordModel->addRecord($data);
