@@ -65,9 +65,10 @@ CREATE TABLE IF NOT EXISTS `__PREFIX__finance_record` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type_id` smallint(5) NOT NULL,
   `account_id` smallint(3) NOT NULL,
+  `source_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `financer_id` int(11) DEFAULT NULL,
-  `amount` decimal(10,2) NOT NULL,
+  `amount` float(10,2) NOT NULL,
   `type` smallint(1) NOT NULL DEFAULT '1' COMMENT '1进2出',
   `status` smallint(1) NOT NULL DEFAULT '0',
   `dateline` varchar(12) NOT NULL,
@@ -80,5 +81,6 @@ CREATE TABLE IF NOT EXISTS `__PREFIX__finance_record` (
   KEY `user_id` (`user_id`),
   KEY `financer_id` (`financer_id`),
   KEY `type_id` (`type_id`),
-  KEY `deleted` (`deleted`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `source_id` (`source_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
