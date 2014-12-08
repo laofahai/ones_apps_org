@@ -31,7 +31,7 @@ class ProducePlanMakePurchase extends WorkflowAbstract {
         unset($data["doNext"]);
         unset($data["id"]);
 
-        $data["source_model"] = "Orders";
+        $data["source_model"] = "ProducePlan";
         $data["source_id"] = $this->mainrowId;
 
         foreach($data["rows"] as $k=>$row) {

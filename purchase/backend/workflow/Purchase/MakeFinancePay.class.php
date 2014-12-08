@@ -16,7 +16,7 @@ class PurchaseMakeFinancePay extends WorkflowAbstract {
             $this->error("not_found");exit;
         }
 
-        if(!isset($_POST["message"])) {
+        if(!isset($_POST["donext"])) {
             $this->leaveMessage();
             exit;
         }

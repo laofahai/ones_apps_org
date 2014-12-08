@@ -171,6 +171,18 @@ class StockinModel extends CommonModel {
             reIndex($billItems)
         );
     }
-    
-    
+
+    /*
+     * 通过原始单据
+     * **/
+    public function toRelatedItem($sourceModel, $sourceId) {
+        $map = array(
+            "source_model" => $sourceModel,
+            "source_id"    => $sourceId
+        );
+        return $this->field(
+            "id,bill_id,'Stockin' AS type,'sign-in' AS icon,'store/editBill/stockin/id/' AS link"
+        )->where($map)->order("id ASC")->select();
+    }
+
 }

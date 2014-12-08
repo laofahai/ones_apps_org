@@ -90,6 +90,34 @@ class PurchaseAction extends CommonAction {
 
         $formData["rows"] = reIndex($params[0]);
 
+        /*
+         * 相关单据
+         * **/
+        $relateItem = array();
+        $id = abs(intval($_GET["id"]));
+        if(isAppLoaded("store")) {
+            $tmp = D("Stockin")->toRelatedItem("Purchase", $id);
+            if($tmp) {
+                $relateItem = array_merge($relateItem, $tmp);
+            }
+        }
+
+        if(isAppLoaded("finance")) {
+            $tmp = D("FinancePayPlan")->toRelatedItem("Purchase",$id);
+            if($tmp) {
+                $relateItem = array_merge($relateItem, $tmp);
+            }
+        }
+
+        if($formData["source_model"] == "ProducePlan" && $formData["source_id"] && isAppLoaded("produce")) {
+            $tmp = D("ProducePlan")->getRelatedItem($formData["source_id"]);
+            if($tmp) {
+                $relateItem[] = $tmp;
+            }
+        }
+
+        $formData["relatedItems"] = $relateItem;
+
 
         $this->response($formData);
     }

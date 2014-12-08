@@ -50,6 +50,14 @@ class StockoutViewModel extends CommonViewModel {
             $sourceModel = D($data["source_model"]."View");
             $data["source"] = $sourceModel->find($data["source_id"]);
 
+            if($_GET["includeRelated"]) {
+                try {
+                    $model = D($data["source_model"]);
+                    $related = $model->getRelatedItem($data["source_id"]);
+                    $data["relatedItems"][] = $related;
+                } catch(Exception $e) {}
+            }
+
             if($_GET["includeSourceRows"]) {
                 $sourceDetailModel = D($data["source_model"]."Detail");
 

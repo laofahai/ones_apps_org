@@ -10,7 +10,20 @@
             name: "stockoutList",
             icon: "sign-out",
             link: "store/list/stockout",
-            sort: 6
+            getTip: function() {
+                //未处理出库单
+                var stockOutRes = injector.get("StockoutRes");
+                stockOutRes.query({
+                    unhandled: true,
+                    onlyCount: true
+                }).$promise.then(function(data){
+                        var count = parseInt(data[0].count);
+                        if(count <= 0) {
+                            return;
+                        }
+                        ones.pluginScope.get("dashboardSetBtnTip")("stockoutList", count);
+                    });
+            }
         });
 
         ones.pluginScope.append("dashboardAppBtns", {
@@ -18,7 +31,20 @@
             name: "stockinList",
             icon: "sign-in",
             link: "store/list/stockin",
-            sort: 4
+            getTip: function() {
+                //未处理入库单
+                var stockInRes = injector.get("StockinRes");
+                stockInRes.query({
+                    unhandled: true,
+                    onlyCount: true
+                }).$promise.then(function(data){
+                    var count = parseInt(data[0].count);
+                    if(count <= 0) {
+                        return;
+                    }
+                    ones.pluginScope.get("dashboardSetBtnTip")("stockinList", count);
+                });
+            }
         });
 
         ones.pluginScope.append("dashboardAppBtns", {
@@ -26,49 +52,23 @@
             name: "stockWarningList",
             icon: "warning",
             link: "store/list/stockWarning",
-            sort: 3
-        });
+            getTip: function() {
+                //库存警告
+                var stockWarningAPI = injector.get("Store.StockWarningAPI");
+                stockWarningAPI.api.query({
+                    unhandled: true,
+                    onlyCount: true
+                }).$promise.then(function(data){
+                        var count = parseInt(data[0].count);
+                        if(count <= 0) {
+                            return;
+                        }
+                        ones.pluginScope.get("dashboardSetBtnTip")("stockWarningList", count);
+                    });
 
-        //未处理入库单
-        var stockInRes = injector.get("StockinRes");
-        stockInRes.query({
-            unhandled: true,
-            onlyCount: true
-        }).$promise.then(function(data){
-                var count = parseInt(data[0].count);
-                if(count <= 0) {
-                    return;
-                }
-                ones.pluginScope.get("dashboardSetBtnTip")("stockinList", count);
-            });
-
-        //未处理出库单
-        var stockOutRes = injector.get("StockoutRes");
-        stockOutRes.query({
-            unhandled: true,
-            onlyCount: true
-        }).$promise.then(function(data){
-            var count = parseInt(data[0].count);
-            if(count <= 0) {
-                return;
+                ones.pluginScope.set("defer", defer);
             }
-            ones.pluginScope.get("dashboardSetBtnTip")("stockoutList", count);
         });
-
-        //库存警告
-        var stockWarningAPI = injector.get("Store.StockWarningAPI");
-        stockWarningAPI.api.query({
-            unhandled: true,
-            onlyCount: true
-        }).$promise.then(function(data){
-                var count = parseInt(data[0].count);
-                if(count <= 0) {
-                    return;
-                }
-                ones.pluginScope.get("dashboardSetBtnTip")("stockWarningList", count);
-            });
-
-        ones.pluginScope.set("defer", defer);
     });
 
     //综合搜索
@@ -793,7 +793,12 @@
 
                 $scope.config = {
                     model: model,
-                    resource: res
+                    resource: res,
+                    opts: {
+                        queryExtraParams: {
+                            includeRelated: true
+                        }
+                    }
                 };
 
                 //出库类型字段定义

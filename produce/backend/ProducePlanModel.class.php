@@ -152,7 +152,7 @@ class ProducePlanModel extends CommonModel {
         )->where($map)->order("id ASC")->select();
     }
 
-    public function getRelatedItem($sourceModel, $sourceId) {
+    public function getRelatedItem($sourceId) {
         return $this->field(
             "id,id AS 'bill_id','ProducePlan' AS type,'retweet' AS icon,'produce/editBill/producePlan/id/' AS link"
         )->find($sourceId);
