@@ -1,0 +1,20 @@
+{
+    "alias": "finance",
+    "version": "0.2.1",
+    "requirements": {
+        "ones": ">= 0.1.6",
+        "crm": ">= 0.1"
+    },
+    "workflow": ["FinancePay","FinanceReceive"],
+    "navs": {
+        "finance" : {
+            "icon" : "money",
+            "childs": {
+                "finance_record" : "finance/list/financeRecord",
+                "finance_receive_plan": "finance/list/financeReceivePlan",
+                "finance_pay_plan" : "finance/list/financePayPlan",
+                "finance_account" : "finance/list/financeAccount"
+            }
+        }
+    }
+}
