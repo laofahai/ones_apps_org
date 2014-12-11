@@ -17,10 +17,12 @@ class FinancePayCompleteProcess extends WorkflowAbstract {
 
     public function checkAllPayed() {
         $plan = D("FinancePayPlan")->find($this->mainrowId);
+        print_r($plan);exit;
 
         if($plan["payed"] < $plan["amount"]) {
             return false;
         }
+        return true;
     }
     
 }

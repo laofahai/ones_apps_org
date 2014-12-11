@@ -21,6 +21,7 @@ class FinanceReceiveCompleteProcess extends WorkflowAbstract {
         if($plan["received"] < $plan["amount"]) {
             return false;
         }
+        return true;
     }
 
     
