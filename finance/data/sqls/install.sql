@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `__PREFIX__finance_receive_plan` (
   `amount` float(10,2) NOT NULL,
   `received` decimal(10,2) NOT NULL DEFAULT '0.00',
   `create_dateline` varchar(12) NOT NULL,
-  `pay_dateline` varchar(12) NOT NULL,
+  `receive_dateline` varchar(12) NOT NULL,
   `memo` varchar(255) NULL,
   `status` smallint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),

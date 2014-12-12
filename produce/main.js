@@ -340,7 +340,10 @@
                             nameField: "combineLabel",
                             width: 300,
                             callback: function(tr) {
-                                tr.find("[data-bind-model='craft'] label").trigger("click");
+                                setTimeout(function(){
+                                    tr.find("[data-bind-model='craft'] label").trigger("click");
+                                }, 300);
+
                             },
                             listAble: false
                         },
@@ -656,6 +659,15 @@
                 };
 
                 ComView.makeGridSelectedActions($scope, model, res, "produce", "producePlan");
+
+
+                $scope.$on("bill.dataLoaded", function(){
+                    setTimeout(function(){
+                        $("#billTable .tdEditAble[data-input-type='craft'] label").trigger("click");
+                    }, 500);
+                });
+
+
 
             }])
 

@@ -191,7 +191,7 @@
                             hideInForm: true,
                             cellFilter: "dateFormat:0"
                         },
-                        pay_dateline: {
+                        receive_dateline: {
                             hideInForm: true,
                             cellFilter: "dateFormat:0"
                         },
