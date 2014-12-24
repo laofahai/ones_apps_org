@@ -603,7 +603,7 @@
                         num: {
                             inputType: "number",
                             totalAble: true,
-                            "ui-event": "{blur: 'afterNumBlur($event)'}",
+                            uiEvents: "{blur: 'afterNumBlur($event)'}",
                             printAble:true
                         },
                         memo: {}

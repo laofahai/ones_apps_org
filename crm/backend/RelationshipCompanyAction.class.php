@@ -9,7 +9,7 @@
 /**
  * Description of RelationshipCompanyAction
  *
- * @author nemo
+ * @author 闫志鹏 <dk_nemo@163.com>
  */
 class RelationshipCompanyAction extends CommonAction {
     

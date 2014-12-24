@@ -175,7 +175,7 @@
                         num: {
                             inputType: "number",
                             totalAble: true,
-                            "ui-event": "{blur: 'afterNumBlur($event)'}",
+                            uiEvents: "{blur: 'afterNumBlur($event)'}",
                             printAble:true
                         },
                         discount: {
@@ -183,7 +183,7 @@
                         },
                         unit_price: {
                             inputType: "number",
-                            "ui-event": "{blur: 'afterUnitPriceBlur($event)'}",
+                            uiEvents: "{blur: 'afterUnitPriceBlur($event)'}",
                             cellFilter: "toCurrency:'￥'",
                             printAble:true
                         },
@@ -269,11 +269,11 @@
                         num: {
                             inputType: "number",
                             totalAble: true,
-                            "ui-event": "{blur: 'afterNumBlur($event)'}",
+                            uiEvents: "{blur: 'afterNumBlur($event)'}",
                         },
                         unit_price: {
                             inputType: "number",
-                            "ui-event": "{blur: 'afterUnitPriceBlur($event)'}",
+                            uiEvents: "{blur: 'afterUnitPriceBlur($event)'}",
                             cellFilter: "toCurrency:'￥'"
                         },
                         amount: {
@@ -315,7 +315,7 @@
                         num: {
                             inputType: "number",
                             totalAble: true,
-                            "ui-event": "{blur: 'afterNumBlur($event)'}",
+                            uiEvents: "{blur: 'afterNumBlur($event)'}",
                             printAble:true
                         },
                         memo: {}
@@ -362,7 +362,7 @@
                     },
                     fieldDefine: {
                         displayName: l("lang.customer"),
-//                        "ui-event": "{blur: 'afterNumBlur($event)'}",
+//                        uiEvents: "{blur: 'afterNumBlur($event)'}",
                         inputType: "select3",
                         "ng-model": "formMetaData.customer_id",
                         dataSource: RelationshipCompanyRes,
@@ -447,7 +447,7 @@
                         field: "customer_id"
                     },
                     fieldDefine: {
-//                        "ui-event": "{blur: 'afterNumBlur($event)'}",
+//                        uiEvents: "{blur: 'afterNumBlur($event)'}",
                         inputType: "select3",
                         "ng-model": "formMetaData.customer_id",
                         dataSource: RelationshipCompanyRes

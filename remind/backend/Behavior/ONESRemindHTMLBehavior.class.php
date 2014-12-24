@@ -13,7 +13,7 @@ class ONESRemindHTMLBehavior extends Behavior {
         echo <<<EOF
         <li ng-controller="NavRemindCtl">
             <a data-toggle="dropdown" class="dropdown-toggle">
-                <i class="icon icon-bell" ng-class="{'icon-animated-bell': reminds.length>0}"></i>
+                <i class="icon fa-bell" ng-class="{'fa-animated-bell': reminds.length>0}"></i>
                 <span class="badge badge-important" ng-bind="reminds.length" ng-show="reminds.length>0"></span>
             </a>
 
