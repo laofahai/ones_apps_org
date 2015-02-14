@@ -25,7 +25,7 @@ class OrdersModel extends CommonModel {
     );
 
     public $relationModels = array(
-        "Stockout"
+        "Stockout", "FinanceReceivePlan"
     );
 
     protected $readonlyField = array(
@@ -35,6 +35,7 @@ class OrdersModel extends CommonModel {
     public function newOrder($data) {
         
         if(!$data["rows"]) {
+            $this->error = "fillTheForm";
             return false;
         }
 
@@ -66,7 +67,7 @@ class OrdersModel extends CommonModel {
         
         $orderId = $this->$method($data);
 
-        if(!$orderId && $data["id"]) {
+        if($data["id"]) {
             $orderId = $data["id"];
         }
 
@@ -90,16 +91,14 @@ class OrdersModel extends CommonModel {
 
             $rowMethod = $row["id"] ? "save" : "add";
 
-            if($rowMethod == "add") {
-                $row["order_id"] = $orderId;
-            } else {
-                unset($row["order_id"]);
-            }
+            $row["order_id"] = $orderId;
 
             $rs = $detail->$rowMethod($row);
             if(false === $rs) {
                 Log::write("SQL Error:".$this->getLastSql(), Log::SQL);
                 $this->rollback();
+                $this->error = 'save order detail failed';
+                return false;
                 break;
             }
         }
@@ -110,6 +109,12 @@ class OrdersModel extends CommonModel {
     }
     
     public function formatData($data) {
+        $rowsFields = array(
+            "goods_id", "factory_code_all", "num", "unit_price", "amount", "discount", "order_id"
+        );
+
+        $data["tax_amount"] = $data["tax_amount"];
+        $data["total_num"] = 0;
         foreach($data["rows"] as $k=>$row) {
             if(!$row or !$row["goods_id"]) {
                 unset($data["rows"][$k]);
@@ -118,15 +123,25 @@ class OrdersModel extends CommonModel {
             list($fcCode, $goods_id, $catid) = explode("_", $row["goods_id"]);
             $data["rows"][$k]["goods_id"] = $goods_id;
             $data["rows"][$k]["factory_code_all"] = makeFactoryCode($row, $fcCode);
+            $data["total_num"] += $row["num"];
+        }
 
+        foreach($data["rows"] as $k=>$row) {
+            foreach($row as $i=>$j) {
+                if(!in_array($i, $rowsFields)) {
+                    unset($data["rows"][$k][$i]);
+                }
+            }
         }
         
         $id = abs(intval($_GET["id"]));
         if($id) {
             $data["id"] = $id;
+        } else {
+            $data["bill_id"] = makeBillCode("XS");
         }
         
-        $data["bill_id"] = makeBillCode("XS");
+
         if($data["inputTime"] && !$id) {
             $data["dateline"] = strtotime($data["inputTime"]);
         } else {

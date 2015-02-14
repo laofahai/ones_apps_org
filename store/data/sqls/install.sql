@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `__PREFIX__stockout_detail` (
   `stockout_id` int(11) NOT NULL,
   `factory_code_all` varchar(50) NOT NULL,
   `goods_id` int(11) NOT NULL,
-  `stock_id` smallint(5) NOT NULL,
+  `stock_id` smallint(5) NULL,
   `num` decimal(10,2) NOT NULL,
   `outed` decimal(10,2) NOT NULL DEFAULT '0.00',
   `memo` varchar(255) DEFAULT NULL,

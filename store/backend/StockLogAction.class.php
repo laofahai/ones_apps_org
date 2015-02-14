@@ -14,7 +14,7 @@ class StockLogAction extends CommonAction {
 
     protected function _filter(&$map) {
         if($_GET["source_id"]) {
-            $map["source_id"] = abs(intval($_GET["source_id"]));
+            $map["source_id"] = array("IN", $_GET["source_id"]);
         }
         if($_GET["type"]) {
             $map["type"] = $_GET["type"] > 1 ? 2 : 1;

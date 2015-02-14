@@ -86,8 +86,8 @@ class StockoutModel extends CommonModel {
     public function formatData($postData) {
         if(!$postData["id"]) {
             $data["bill_id"] = makeBillCode("CK");
-            $data["source_id"] = "";
-            $data["source_model"] = "";
+            $data["source_id"] = $postData["source_id"] ? $postData["source_id"] : "";
+            $data["source_model"] = $postData["source_model"] ? $postData["source_model"] : "";
             $data["dateline"] = strtotime($postData['dateline']);
             $data["stock_manager"] = getCurrentUid();
             $data["status"] = 0;
@@ -105,7 +105,7 @@ class StockoutModel extends CommonModel {
         );
         foreach($postData["rows"] as $row) {
             list($fc,$goods_id) = explode("_", $row["goods_id"]);
-            if(!checkParamsFull($row, $needed)) {
+            if(!checkParamsFull($row, $needed) || !$row["num"]) {
                 continue;
             }
             $rows[] = array(
@@ -113,8 +113,10 @@ class StockoutModel extends CommonModel {
                 "stockout_id" => $row["stockout_id"],
                 "factory_code_all" => makeFactoryCode($row, $fc),
                 "goods_id" => $goods_id,
+                "goods_id_label" => $row["goods_id_label"],
                 "stock_id" => $row["stock"],
                 "num" => $row["num"],
+                "store_num" => $row["store_num"],
                 "outed" => $row["outed"] ? $row["outed"] :0,
                 "memo" => $row["memo"]
             );
@@ -131,6 +133,7 @@ class StockoutModel extends CommonModel {
         $rows = $data["rows"];
 
         if(!$rows) {
+            $this->error = "fillTheForm";
             return false;
         }
         unset($data["rows"]);
@@ -145,6 +148,7 @@ class StockoutModel extends CommonModel {
         $stockOutId = $this->add($data);
 
         if(!$stockOutId) {
+            $this->error = "save stockout failed";
             $this->rollback();
             Log::write($this->getLastSql(), Log::SQL);
             return false;
@@ -153,9 +157,15 @@ class StockoutModel extends CommonModel {
         $detailModel = D("StockoutDetail");
         foreach($rows as $row) {
             $row["stockout_id"] = $stockOutId;
+            unset($row["id"]);
+//            if(isset($row["store_num"]) && $row["store_num"] < $row["num"]) {
+//                $this->error = "_unicode_|".$row["goods_id_label"].lang("messages.store_num_not_full");
+//                return false;
+//            }
             if(!$detailModel->add($row)) {
                 $this->rollback();
                 Log::write($this->getLastSql(), Log::SQL);
+                $this->error = "save stockout detail failed";
                 return false;
             }
         }
@@ -174,6 +184,10 @@ class StockoutModel extends CommonModel {
 //        print_r($bill);exit;
         $rows = $bill["rows"];
         unset($bill["rows"]);
+        if(!$rows) {
+            $this->error = "fillTheForm";
+            return false;
+        }
 
         /*
          * 预检测factory_code_all

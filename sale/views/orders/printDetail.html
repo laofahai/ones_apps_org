@@ -1,0 +1,67 @@
+<pageactions></pageactions>
+
+<div class="page-invoice printAbleContainer print_{{printModule}}">
+    <div class="panel invoice">
+        <div class="invoice-header">
+            <h3>
+                <div>
+                    <small>
+                        <span ng-bind="onesConf.company_name"></span>
+                        <span ng-bind="printTitle"></span>
+                    </small><br>
+                    <span ng-bind="billId"></span>
+                </div>
+            </h3>
+            <address>
+                <span ng-bind="companyInfo.address"></span><br />
+                <span ng-bind="companyInfo.phone"></span><br />
+            </address>
+            <div class="invoice-date">
+                <small ng-bind="data.dateline|dateFormat:'yyyy-MM-dd HH:mm'"></small>
+                <br />
+                <small ng-bind="'lang.handlingMan'|lang"></small>
+                <small ng-bind="data.sponsor"></small>
+            </div>
+        </div> <!-- / .invoice-header -->
+        <div class="invoice-info" ng-show="data.customer_id">
+            <div class="invoice-recipient">
+                <strong ng-bind="data.customer"></strong>
+                <span ng-bind="data.address"></span>
+            </div> <!-- / .invoice-recipient -->
+            <div class="invoice-total" ng-show="data.total_amount_real">
+                <small ng-bind="'lang.total'|lang"></small>
+                <small ng-bind="'lang.total_amount_real'|lang"></small>:
+                <span ng-bind="data.total_amount_real|currency:'￥'"></span>
+                <small ng-bind="data.total_amount_real|rmbToBig"></small>
+            </div> <!-- / .invoice-total -->
+            <div class="clearfix"></div>
+        </div>
+
+
+        <div class="invoice-table">
+            <table>
+                <thead>
+                <tr>
+                    <th ng-bind="rowField.displayName" ng-repeat="rowField in rowsStructure"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in data.rows">
+                    <td ng-repeat="rowField in rowsStructure" ng-bind="row[rowField.field+'_label']||row[rowField.field]"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row" ng-include="'common/base/views/printFooter.html'"></div>
+    </div>
+</div>
+
+<div class="row text-center">
+    <button class="btn btn-primary btn-sm hidden-print" ng-click="doPrint()">
+        <i class="icon fa-print"></i>
+        {{'lang.actions.print'|lang}}
+    </button>
+</div>
+
+

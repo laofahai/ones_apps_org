@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `__PREFIX__finance_receive_plan` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`,`customer_id`,`source_model`,`source_id`,`status`),
   KEY `create_dateline` (`create_dateline`),
-  KEY `pay_dateline` (`pay_dateline`),
+  KEY `receive_dateline` (`receive_dateline`),
   KEY `account_id` (`account_id`),
   KEY `financer_id` (`financer_id`),
   KEY `type_id` (`type_id`)

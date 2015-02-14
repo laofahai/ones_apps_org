@@ -148,8 +148,9 @@ class StockinModel extends CommonModel {
         
         $data = $postData["rows"];
         $billItems = array();
+        $needed = array("goods_id", "num");
         foreach($data as $k=> $billItem) {
-            if(!$billItem) {
+            if(!$billItem || !$billItem["num"] || !checkParamsFull($billItem, $needed)) {
                 continue;
             }
             list($factory_code, $goodsId, $catid) = explode("_", $billItem["goods_id"]);

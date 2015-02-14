@@ -72,6 +72,10 @@ class OrdersAction extends CommonAction {
         
         $formData["rows"] = reIndex($rowData);
 
+        if($formData["tax_amount"]) {
+            $formData["includeTax"] = true;
+        }
+
         /*
          * 相关单据
          * **/

@@ -237,11 +237,8 @@
                     remoteDataField: "managers",
                     listAble:false,
                     dataSource: "Department.UserAPI",
-                    hideInDetail:true
-                },
-                total_num: {
-                    displayName: l('lang.total'),
-                    hideInForm: true
+                    hideInDetail:true,
+                    required: true
                 }
             };
             this.getStructure = function(){
@@ -275,7 +272,9 @@
                         require: ["goods_id"],
                         queryExtra: ["goods_id"],
                         config: {
-                            hideInForm: true
+                            hideInForm: true,
+                            inputType: "text",
+                            readonly: true
                         }
                     });
                     return ones.pluginScope.get("defer").promise;
@@ -286,8 +285,8 @@
                         billAble:false
                     },
                     goods_name: {
-                        inputType: "static",
-                        hideInForm: true
+                        inputType: "text",
+                        readonly: true
                     },
                     unit_price: {
                         cellFilter: "toCurrency:'￥'",

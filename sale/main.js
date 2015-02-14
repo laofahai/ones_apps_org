@@ -36,6 +36,14 @@
                     templateUrl: appView('orders/edit.html', "sale"),
                     controller: 'OrdersEditCtl'
                 })
+                .when('/sale/print/orders/id/:id', {
+                    templateUrl: appView("orders/printDetail.html", "sale"),
+                    controller: "OrdersPrintCtl"
+                })
+                .when('/sale/print/returns/id/:id', {
+                    templateUrl: appView("returns/printDetail.html", "sale"),
+                    controller: "ReturnsPrintCtl"
+                })
                 //订单退货
                 .when('/sale/addBill/returns', {
                     templateUrl: appView('returns/edit.html', "sale"),
@@ -80,14 +88,26 @@
                     isBill: true,
                     workflowAlias: "orders",
                     printAble: true,
+                    printConfig: {
+                        title: l("lang.orders"),
+                        tpl: appView("orders/printDetail.html", "sale")
+                    },
                     rowsModel: "OrdersEditModel",
                     filters: {
-                        between: {
-                            field: "dateline",
+                        _fieldMap: true,
+                        dateline: {
+                            type: "between",
                             defaultData: [getDateForInput(startTime), getDateForInput(endTime)],
                             inputType: "datetime"
                         },
-                        workflow: "orders"
+                        customer_id: {
+                            type: "select3",
+                            dataSource: "RelationshipCompanyRes",
+                            autoQuery: true
+                        },
+                        orders: {
+                            type: "workflow"
+                        }
                     }
                 }
             };
@@ -127,6 +147,9 @@
                     total_amount_real: {
                         cellFilter: "toCurrency:'￥'"
                     },
+                    tax_amount: {
+                        cellFilter: "toCurrency"
+                    },
                     dateline: {
                         cellFilter: "dateFormat:0",
                         inputType: "datetime",
@@ -143,12 +166,13 @@
 
             return obj;
         }])
-        .service("OrdersEditModel", ["$rootScope", "GoodsRes", "pluginExecutor",
-            function($rootScope, GoodsRes, plugin) {
+        .service("OrdersEditModel", ["$rootScope", "GoodsRes", "pluginExecutor", "$location",
+            function($rootScope, GoodsRes, plugin, $location) {
                 var obj = {
                     config: {
                         relateMoney: true,
-                        workflowAlias: "orders"
+                        workflowAlias: "orders",
+                        printAble: false
                     }
                 };
                 obj.getStructure = function() {
@@ -168,9 +192,18 @@
                             listAble: false,
                             width: "20%",
                             printAble:true,
+                            bindToLabel: true,
                             dynamicAddOpts: {
                                 model: "GoodsModel"
                             }
+                        },
+                        goods_name: {
+                            billAble: false
+                        },
+                        customer: {
+                            hideInForm: true,
+                            field: "customer_name",
+                            billAble: false
                         },
                         num: {
                             inputType: "number",
@@ -193,7 +226,9 @@
                             totalAble: true,
                             printAble:true
                         },
-                        memo: {}
+                        memo: {
+                            printAble:true
+                        }
 
                     };
 
@@ -216,7 +251,12 @@
                     relateMoney: true,
                     isBill: true,
                     workflowAlias: "returns",
-                    rowsModel: "ReturnsEditModel"
+                    rowsModel: "ReturnsEditModel",
+                    printAble: true,
+                    printConfig: {
+                        title: l("lang.navs.returns"),
+                        tpl: appView("returns/printDetail.html", "sale")
+                    }
                 },
                 getStructure: function(){
                     return {
@@ -240,8 +280,8 @@
                 }
             };
         }])
-        .service("ReturnsEditModel", ["$rootScope", "GoodsRes", "pluginExecutor",
-            function($rootScope, GoodsRes, plugin) {
+        .service("ReturnsEditModel", ["$rootScope", "pluginExecutor",
+            function($rootScope, plugin) {
                 var obj = {
                     config: {
                         relateMoney: true,
@@ -260,28 +300,38 @@
                             displayName: i18n.goods,
                             labelField: true,
                             inputType: "select3",
-                            dataSource: GoodsRes,
+                            dataSource: "GoodsRes",
                             valueField: "combineId",
                             nameField: "combineLabel",
                             listAble: false,
-                            width: "20%"
+                            width: "20%",
+                            printAble:true,
+                            bindToLabel: true,
+                            dynamicAddOpts: {
+                                model: "GoodsModel"
+                            }
                         },
                         num: {
                             inputType: "number",
                             totalAble: true,
                             uiEvents: "{blur: 'afterNumBlur($event)'}",
+                            printAble:true
                         },
                         unit_price: {
                             inputType: "number",
                             uiEvents: "{blur: 'afterUnitPriceBlur($event)'}",
-                            cellFilter: "toCurrency:'￥'"
+                            cellFilter: "toCurrency:'￥'",
+                            printAble:true
                         },
                         amount: {
                             inputType: "number",
                             cellFilter: "toCurrency:'￥'",
-                            totalAble: true
+                            totalAble: true,
+                            printAble:true
                         },
-                        memo: {}
+                        memo: {
+                            printAble:true
+                        }
 
                     };
 
@@ -337,8 +387,8 @@
             };
         }])
 
-        .controller("OrdersEditCtl", ["$scope", "OrdersRes", "GoodsRes", "OrdersModel", "ComView", "RelationshipCompanyRes", "$routeParams",
-            function($scope, OrdersRes, GoodsRes, OrdersModel, ComView, RelationshipCompanyRes, $routeParams) {
+        .controller("OrdersEditCtl", ["$scope", "OrdersRes", "GoodsRes", "OrdersModel", "ComView", "RelationshipCompanyRes", "$routeParams", "$injector", "$timeout",
+            function($scope, OrdersRes, GoodsRes, OrdersModel, ComView, RelationshipCompanyRes, $routeParams, $injector, $timeout) {
 
                 $routeParams.group = "sale";
                 $routeParams.module = "orders";
@@ -351,7 +401,10 @@
                 if(!$scope.formMetaData) {
                     $scope.formMetaData = {
                         inputTime: getDateForInput(),
-                        total_amount_real: 0
+                        total_amount_real: 0,
+                        includeTax: true,
+                        tax_amount: 0,
+                        total_amount:0
                     };
                 }
 
@@ -386,6 +439,61 @@
                     }
                 };
 
+                $scope.$on("bill.dataloaded", function() {
+                    if($scope.formMetaData.tax_amount) {
+                        $scope.formMetaData.includeTax
+                    }
+                });
+
+                //稅款
+                $scope.$watch("formMetaData.total_amount", function(n, o){
+                    if($scope.formMetaData.includeTax) {
+                        $scope.formMetaData.tax_amount = Number(
+                            parseFloat($scope.formMetaData.total_amount * (Number(ones.BaseConf['system.sale.tax'])) / 100).toFixed(2)
+                        );
+                        $timeout(function(){
+                            $scope.formMetaData.total_amount_real = Number($scope.formMetaData.total_amount)+Number($scope.formMetaData.tax_amount);
+                        }, 200);
+
+                    }
+                });
+                $scope.$watch(function(){
+                    return $scope.formMetaData.includeTax;
+                }, function(n, o){
+                    $timeout(function(){
+                        if(!n) {
+                            $scope.formMetaData.total_amount_real = Number($scope.formMetaData.total_amount);
+                        } else {
+                            $scope.formMetaData.total_amount_real = Number($scope.formMetaData.total_amount)+Number($scope.formMetaData.tax_amount);
+                        }
+                    }, 200);
+
+                });
+
+                $scope.$parent.goodsCombineCallback = function(data) {
+                    if(data.added) {
+                        $scope.billData = [];
+                    }
+                    if(!$scope.formMetaData.total_amount_real) {
+                        $scope.formMetaData.total_amount_real = 0;
+                    }
+                    $scope.formMetaData.total_amount_real += parseFloat(data.price);
+                    angular.forEach(data.rows, function(item){
+
+                        angular.forEach(data.rows, function(item){
+                            if($scope.formMetaData.customerInfo) {
+                                item.discount = $scope.formMetaData.customerInfo.discount;
+                                item.amount = parseFloat(item.unit_price * $scope.formMetaData.customerInfo.discount / 100);
+                            }
+                            $scope.billData.push(item);
+                        });
+                    });
+                };
+
+
+                $scope.formMetaData.customerInfo = {
+                    discount: 100
+                };
                 //客户ID变动时 更新当前的折扣率
                 $scope.$watch('formMetaData.customer_id', function(){
                     if(!$scope.billData || $routeParams.id) {
@@ -447,12 +555,16 @@
                         field: "customer_id"
                     },
                     fieldDefine: {
-//                        uiEvents: "{blur: 'afterNumBlur($event)'}",
+                        displayName: l("lang.customer"),
                         inputType: "select3",
                         "ng-model": "formMetaData.customer_id",
-                        dataSource: RelationshipCompanyRes
+                        dataSource: RelationshipCompanyRes,
+                        dynamicAddOpts: {
+                            model: "RelationshipCompanyModel"
+                        }
                     }
                 };
+
                 //销售类型字段定义
                 $scope.typeSelectOpts = {
                     context: {
@@ -509,5 +621,65 @@
                     resource: OrdersRes
                 };
             }])
+
+
+        .controller("OrdersPrintCtl", ["$scope", "OrdersModel", "OrdersRes", "CommonPrint", "$routeParams",
+            function($scope, model, res, printer, $routeParams){
+                $scope.selectAble = false;
+                $scope.printModule = "sale_orders";
+
+                printer.init($scope, $routeParams.id);
+
+                printer.assignStructure(model);
+
+                this.params = {
+                    id: $routeParams.id,
+                    single: true,
+                    includeRows: true, //包含子行,
+                    includeSourceRows: true,
+                    includeRelated: true
+                };
+
+                var promise = getDataApiPromise(res, "get", this.params);
+                printer.assignMeta(promise, model, function() {
+                    //批次
+                    var params = {
+                        source_id: $routeParams.id,
+                        type: 1,
+                        batch: batch
+                    };
+                });
+
+            }
+        ])
+        .controller("ReturnsPrintCtl", ["$scope", "ReturnsModel", "ReturnsRes", "CommonPrint", "$routeParams",
+            function($scope, model, res, printer, $routeParams){
+                $scope.selectAble = false;
+                $scope.printModule = "sale_returns";
+
+                printer.init($scope, $routeParams.id);
+
+                printer.assignStructure(model);
+
+                this.params = {
+                    id: $routeParams.id,
+                    single: true,
+                    includeRows: true, //包含子行,
+                    includeSourceRows: true,
+                    includeRelated: true
+                };
+
+                var promise = getDataApiPromise(res, "get", this.params);
+                printer.assignMeta(promise, model, function() {
+                    //批次
+                    var params = {
+                        source_id: $routeParams.id,
+                        type: 1,
+                        batch: batch
+                    };
+                });
+
+            }
+        ])
     ;
 })();

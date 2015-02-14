@@ -35,6 +35,28 @@ class GoodsAction extends CommonAction {
         }
     }
 
+    public function _before_insert() {
+        $this->checkIt();
+    }
+
+    public function _before_update() {
+        $this->checkIt();
+    }
+
+    private function checkIt() {
+        $post = I("post.");
+        if($post["store_min"] && $post["store_max"] && $post["store_min"] > $post["store_max"]) {
+            $this->error(
+                "store_min_cant_more_than_store_max"
+            );exit;
+        }
+        if($post["cost"] && $post["price"] && $post["cost"] > $post["price"]) {
+            $this->error(
+                "cost_cant_more_than_price"
+            );exit;
+        }
+    }
+
 
     public function index() {
         if(!$_GET["typeahead"]) {

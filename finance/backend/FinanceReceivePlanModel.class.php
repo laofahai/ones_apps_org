@@ -12,7 +12,7 @@
  */
 class FinanceReceivePlanModel extends CommonModel {
     
-    protected $workflowAlias = "financeReceive";
+    public $workflowAlias = "financeReceive";
     
     protected $_auto = array(
         array("create_dateline", CTS),

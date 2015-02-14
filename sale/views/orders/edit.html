@@ -7,19 +7,26 @@
                     <label ng-bind="'lang.customer'|lang"></label>:
                     <inputfield config="customerSelectOpts"></inputfield>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <label>{{'lang.dateline'|lang}}: </label>
                     <span class="input-icon input-icon-right">
                         <input type="datetime-local" name="inputTime" ng-model="formMetaData.inputTime" />
                         <i class="fa-calendar gray"></i>
                     </span>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
+                    <label>{{'lang.type'|lang}}:</label>
                     <inputfield config="typeSelectOpts"></inputfield>
                 </div>
                 <div class="col-sm-3 align-right">
                     <span>{{'lang.billId'|lang}}:</span>
                     <span ng-bind="formMetaData.bill_id" ng-show="formMetaData.bill_id"></span>
+                </div>
+            </div>
+            <div class="space-10"></div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <goods-combine-input></goods-combine-input>
                 </div>
             </div>
         </div>
@@ -32,7 +39,12 @@
                 <div class="col-sm-2">
                     <input type="text" ng-model="formMetaData.total_amount_real" class="input-medium text-right" />
                 </div>
-                <label class="col-sm-1" ng-bind="formMetaData.total_amount_real|currency:'￥'"></label>
+                <div class="col-sm-2">
+                    <input type="checkbox" ng-model="formMetaData.includeTax" ng-checked="formMetaData.includeTax" />
+                    {{'already_include_tax_input'|lang}}
+                    <span ng-bind="formMetaData.tax_amount|currency:'￥'"></span>
+                </div>
+                <!--<label class="col-sm-1" ng-bind="formMetaData.total_amount_real|currency:'￥'"></label>-->
                 <label class="col-sm-1 text-right bolder" ng-bind="'lang.rmbToBig'|lang"></label>
                 <label class="col-sm-4" ng-bind="formMetaData.total_amount_real|rmbToBig"></label>
 
