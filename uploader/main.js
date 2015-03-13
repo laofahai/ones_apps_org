@@ -48,7 +48,7 @@
                     var $elem = $(element);
                     $elem.filestyle({
                         classInput: $elem.data('classinput'),
-                        buttonName: "btn-sm",
+                        buttonName: "btn btn-default",
                         buttonText: l("lang.choose file"),
                         disabled: false
                     });

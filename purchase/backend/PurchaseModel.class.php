@@ -115,7 +115,7 @@ class PurchaseModel extends CommonModel {
             }
             list($fcCode, $goods_id, $catid) = explode("_", $row["goods_id"]);
             $data["rows"][$k]["goods_id"] = $goods_id;
-            $data["rows"][$k]["price"] = $row["price"] ? $row["price"] : 0;
+            $data["rows"][$k]["price"] = $row["amount"] ? $row["amount"] : $row["price"];
             $data["rows"][$k]["factory_code_all"] = makeFactoryCode($row, $fcCode);
         }
 //        $data["total_price_real"] = $data["total_amount_real"];
@@ -125,7 +125,10 @@ class PurchaseModel extends CommonModel {
         $data["purchase_type"] = $data["purchase_type"] ? $data["purchase_type"] : 0;
         $data["supplier_id"] = $data["supplier_id"] ? $data["supplier_id"] : 0;
 
-        $data["bill_id"] = makeBillCode("CG");
+        if(!$data["bill_id"]) {
+            $data["bill_id"] = makeBillCode("CG");
+        }
+
         $data["dateline"] = $data["inputTime"] ? strtotime($data["inputTime"]) : CTS;
         $data["user_id"] = getCurrentUid();
 

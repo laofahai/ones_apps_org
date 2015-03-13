@@ -6,11 +6,12 @@
         },
         "factory_code": {
             "ensureunique": "GoodsRes",
-            "hiddenWhen480": true,
-            "helpText": "factory_code_helptext"
+            "hiddenWhen480": true
         },
         "name": {
-            "ensureunique": "GoodsRes"
+            "ensureunique": "GoodsRes",
+            "width": "200",
+            "style": "width:200px"
         },
         "pinyin": {
             "displayName": ["firstChar"],

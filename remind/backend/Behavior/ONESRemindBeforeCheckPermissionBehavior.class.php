@@ -13,6 +13,7 @@ class ONESRemindBeforeCheckPermissionBehavior extends Behavior {
         $dontNeed = C("AUTH_CONFIG.AUTH_DONT_NEED");
 
         array_push($dontNeed, "remind.remind.read");
+        array_push($dontNeed, "remind.remind.add");
 
         C("AUTH_CONFIG.AUTH_DONT_NEED", $dontNeed);
 

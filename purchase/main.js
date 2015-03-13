@@ -66,7 +66,8 @@
             getStructure: function(){
                 return {
                     bill_id: {
-                        cellFilter: "toLink:purchase/editBill/purchase/id/+id"
+                        cellFilter: "toLink:purchase/editBill/purchase/id/+id",
+                        width: 145
                     },
                     purchase_type: {
                         listAble: false

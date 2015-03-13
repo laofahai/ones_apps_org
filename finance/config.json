@@ -10,10 +10,10 @@
         "finance" : {
             "icon" : "money",
             "childs": {
-                "finance_record" : "finance/list/financeRecord",
-                "finance_receive_plan": "finance/list/financeReceivePlan",
-                "finance_pay_plan" : "finance/list/financePayPlan",
-                "finance_account" : "finance/list/financeAccount"
+                "finance_record" : "finance/list/financeRecord,list-alt",
+                "finance_receive_plan": "finance/list/financeReceivePlan,sign-in",
+                "finance_pay_plan" : "finance/list/financePayPlan,sign-out",
+                "finance_account" : "finance/list/financeAccount,money"
             }
         }
     }

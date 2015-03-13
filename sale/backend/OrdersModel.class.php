@@ -33,7 +33,7 @@ class OrdersModel extends CommonModel {
     );
     
     public function newOrder($data) {
-        
+
         if(!$data["rows"]) {
             $this->error = "fillTheForm";
             return false;
@@ -110,7 +110,7 @@ class OrdersModel extends CommonModel {
     
     public function formatData($data) {
         $rowsFields = array(
-            "goods_id", "factory_code_all", "num", "unit_price", "amount", "discount", "order_id"
+            "goods_id", "factory_code_all", "num", "unit_price", "amount", "discount", "order_id", "memo"
         );
 
         $data["tax_amount"] = $data["tax_amount"];
@@ -133,7 +133,8 @@ class OrdersModel extends CommonModel {
                 }
             }
         }
-        
+
+
         $id = abs(intval($_GET["id"]));
         if($id) {
             $data["id"] = $id;

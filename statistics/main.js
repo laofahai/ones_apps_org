@@ -1,4 +1,5 @@
 (function(){
+	ones.pluginRegister('statistics');
     angular.module("ones.statistics", ["ngHighcharts"])
         .config(["$routeProvider", function($routeProvider){
             $routeProvider.when('/statistics/list/sale', {

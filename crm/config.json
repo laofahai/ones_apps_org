@@ -10,9 +10,9 @@
     "navs": {
         "rel_company" : {
             "childs" : {
-                "relCompanyRecord" : "crm/list/relationshipCompany",
-                "relCompanyContact" : "crm/list/relationshipCompanyLinkman",
-                "relCompanyGroup" : "crm/list/relationshipCompanyGroup"
+                "relCompanyRecord" : "crm/list/relationshipCompany,link",
+                "relCompanyContact" : "crm/list/relationshipCompanyLinkman,user",
+                "relCompanyGroup" : "crm/list/relationshipCompanyGroup,users"
             },
             "icon" : "link"
         }

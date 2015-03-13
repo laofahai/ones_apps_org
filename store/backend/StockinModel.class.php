@@ -29,7 +29,7 @@ class StockinModel extends CommonModel {
     public function newBill($billData, $billItems) {
 
         if(!$billItems) {
-            $this->error = "params_error";
+            $this->error = "fillTheForm";
             return false;
         }
 

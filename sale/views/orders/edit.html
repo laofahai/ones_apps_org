@@ -1,17 +1,17 @@
 <pageactions></pageactions>
 <div class="billContainer">
-    <form name="ordersScript" ng-keydown="doKeydown($event);" novalidate>
+    <form name="ordersScript" ng-keydown="doKeydown($event);" class="form-inline" novalidate>
         <div class="billHeader">
             <div class="row">
                 <div class="col-sm-3" id="abc">
                     <label ng-bind="'lang.customer'|lang"></label>:
                     <inputfield config="customerSelectOpts"></inputfield>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3 ">
                     <label>{{'lang.dateline'|lang}}: </label>
-                    <span class="input-icon input-icon-right">
-                        <input type="datetime-local" name="inputTime" ng-model="formMetaData.inputTime" />
-                        <i class="fa-calendar gray"></i>
+                    <span class="input-group span2">
+                        <input type="datetime-local" class="form-control" name="inputTime" ng-model="formMetaData.inputTime" />
+                        <div class="input-group-addon"><i class="fa fa-calendar gray"></i></div>
                     </span>
                 </div>
                 <div class="col-sm-3">
@@ -25,45 +25,42 @@
             </div>
             <div class="space-10"></div>
             <div class="row">
-                <div class="col-sm-8">
-                    <goods-combine-input></goods-combine-input>
-                </div>
+                <call-plugin hook="end-of-orders-bill-header" var="end-of-orders-bill-header-html"></call-plugin>
             </div>
         </div>
         <div class="billBody">
             <bill config="billConfig"></bill>
         </div>
         <div class="billFooter clearfix">
-            <div class="row form-group">
+            <div class="row mt-10">
                 <label class="col-sm-1 text-right bolder" ng-bind="'lang.total_price_real'|lang"></label>
-                <div class="col-sm-2">
-                    <input type="text" ng-model="formMetaData.total_amount_real" class="input-medium text-right" />
+                <div class="col-xs-2">
+                    <input type="text" ng-model="formMetaData.total_amount_real" class="input-medium text-right form-control" />
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-2">
                     <input type="checkbox" ng-model="formMetaData.includeTax" ng-checked="formMetaData.includeTax" />
                     {{'already_include_tax_input'|lang}}
                     <span ng-bind="formMetaData.tax_amount|currency:'￥'"></span>
                 </div>
                 <!--<label class="col-sm-1" ng-bind="formMetaData.total_amount_real|currency:'￥'"></label>-->
-                <label class="col-sm-1 text-right bolder" ng-bind="'lang.rmbToBig'|lang"></label>
-                <label class="col-sm-4" ng-bind="formMetaData.total_amount_real|rmbToBig"></label>
-
+                <label class="col-xs-1 text-right bolder" ng-bind="'lang.rmbToBig'|lang"></label>
+                <label class="col-xs-4" ng-bind="formMetaData.total_amount_real|rmbToBig"></label>
             </div>
-            <div class="row form-group">
-                <label class="col-sm-1 text-right bolder" ng-bind="'lang.memo'|lang"></label>
-                <div class="col-sm-11">
-                    <input type="text" ng-model="formMetaData.memo" class="width-100" />
+            <div class="row mt-10">
+                <label class="col-xs-1 text-right bolder" ng-bind="'lang.memo'|lang"></label>
+                <div class="col-xs-11">
+                    <input type="text" ng-model="formMetaData.memo" class="width-100 form-control" />
                 </div>
             </div>
-            <div class="row form-group">
-                <label class="col-sm-1 text-right bolder">
+            <div class="row mt-10">
+                <label class="col-xs-1 text-right bolder">
                     {{'lang.sponsor'|lang}}
                 </label>
-                <label class="col-sm-9">
+                <label class="col-xs-9">
                     <span ng-bind="$parent.userInfo.truename"></span>
                 </label>
-                <div class="col-sm-2 text-right">
-                    <button type="button" class="btn btn-sm btn-primary" ng-click="doSubmit();">{{'lang.actions.submit'|lang}}</button>
+                <div class="col-xs-2 text-right">
+                    <button type="button" class="btn btn-primary" ng-click="doSubmit();">{{'lang.actions.submit'|lang}}</button>
                 </div>
             </div>
 

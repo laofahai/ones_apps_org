@@ -88,13 +88,22 @@ class StockoutModel extends CommonModel {
             $data["bill_id"] = makeBillCode("CK");
             $data["source_id"] = $postData["source_id"] ? $postData["source_id"] : "";
             $data["source_model"] = $postData["source_model"] ? $postData["source_model"] : "";
-            $data["dateline"] = strtotime($postData['dateline']);
+
             $data["stock_manager"] = getCurrentUid();
             $data["status"] = 0;
         } else {
             $data["id"] = $postData["id"];
         }
 
+        if($postData["dateline"]) {
+        	if(strtotime($postData['dateline'])) {
+        		$data["dateline"] = strtotime($postData['dateline']);
+        	} else {
+        		$data["dateline"] = strtotime($postData['dateline']);
+        	}
+        } else {
+        	$data["dateline"] = CTS;
+        }
         $data["total_num"] = $postData["total_num"];
         $data["memo"] = $postData["memo"];
 

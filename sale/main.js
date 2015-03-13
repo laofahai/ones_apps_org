@@ -23,6 +23,11 @@
             link: "sale/list/orders"
         });
     });
+//    
+//    ones.pluginRegister("end-of-orders-bill-header", function(injector){
+//    	var html = "";
+//    	ones.pluginScope.append("end-of-orders-bill-header-html", html);
+//    })
 
     angular.module("ones.sale", [])
         .config(["$routeProvider", function($route){
@@ -117,7 +122,8 @@
                     bill_id: {
                         displayName: i18n.billId,
                         inputType: "static",
-                        onlyInEdit: true
+                        onlyInEdit: true,
+                        width: 145
                     },
                     sale_type: {
                         displayName: i18n.type,
@@ -260,7 +266,9 @@
                 },
                 getStructure: function(){
                     return {
-                        bill_id: {},
+                        bill_id: {
+                        	width: 145
+                        },
                         returns_type_label: {
                             displayName: l('lang.type')
                         },
@@ -445,18 +453,21 @@
                     }
                 });
 
-                //稅款
                 $scope.$watch("formMetaData.total_amount", function(n, o){
+                	//含税
                     if($scope.formMetaData.includeTax) {
                         $scope.formMetaData.tax_amount = Number(
-                            parseFloat($scope.formMetaData.total_amount * (Number(ones.BaseConf['system.sale.tax'])) / 100).toFixed(2)
+                            parseFloat($scope.formMetaData.total_amount * (Number(ones.BaseConf['system.sale.tax'])) / 100).toFixed(ones.BaseConf['system.decimal.fixed'])
                         );
                         $timeout(function(){
-                            $scope.formMetaData.total_amount_real = Number($scope.formMetaData.total_amount)+Number($scope.formMetaData.tax_amount);
+                            $scope.formMetaData.total_amount_real = Number(
+                            		parseFloat($scope.formMetaData.total_amount+$scope.formMetaData.tax_amount).toFixed(ones.BaseConf['system.decimal.fixed'])
+                        		);
                         }, 200);
 
                     }
                 });
+                
                 $scope.$watch(function(){
                     return $scope.formMetaData.includeTax;
                 }, function(n, o){
@@ -466,8 +477,9 @@
                         } else {
                             $scope.formMetaData.total_amount_real = Number($scope.formMetaData.total_amount)+Number($scope.formMetaData.tax_amount);
                         }
+                        console.log($scope.formMetaData);
                     }, 200);
-
+                	
                 });
 
                 $scope.$parent.goodsCombineCallback = function(data) {

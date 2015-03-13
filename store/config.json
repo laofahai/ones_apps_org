@@ -10,10 +10,10 @@
         "stock": {
             "icon": "database",
             "childs": {
-                "stock_log": "store/list/stockLog",
-                "stock_list": "store/list/stockProductList",
-                "stockin_paper": "store/list/stockin",
-                "stockout_paper": "store/list/stockout"
+                "stock_log": "store/list/stockLog,list",
+                "stock_list": "store/list/stockProductList,database",
+                "stockin_paper": "store/list/stockin,sign-in",
+                "stockout_paper": "store/list/stockout,sign-out"
             }
         },
         "settings": {

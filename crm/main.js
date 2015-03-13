@@ -5,6 +5,7 @@
         var ComView = injector.get("ComView");
         ones.pluginScope.append("dashboardAppBtns", {
             label: ComView.toLang("appName", "AppCrm"),
+            label_combined: true,
             name: "crmList",
             icon: "group",
             link: "crm/list/relationshipCompany"

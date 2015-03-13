@@ -399,7 +399,8 @@
                 var i18n = l("lang");
                 return {
                     bill_id: {
-                        displayName: i18n.billId
+                        displayName: i18n.billId,
+                        width: 145
                     },
                     subject: {},
                     total_num: {},
@@ -597,7 +598,9 @@
                 },
                 getStructure: function(){
                     return {
-                        bill_id : {},
+                        bill_id : {
+                        	width: 145
+                        },
                         source_model: {
                             cellFilter: "lang"
                         },

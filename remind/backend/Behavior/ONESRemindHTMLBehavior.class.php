@@ -11,9 +11,9 @@ class ONESRemindHTMLBehavior extends Behavior {
 
     public function run(&$params) {
         echo <<<EOF
-        <li ng-controller="NavRemindCtl">
+        <span ng-controller="NavRemindCtl">
             <a data-toggle="dropdown" class="dropdown-toggle">
-                <i class="icon fa-bell" ng-class="{'fa-animated-bell': reminds.length>0}"></i>
+                <i class="fa fa-bell" ng-class="{'fa-animated-bell': reminds.length>0}"></i>
                 <span class="badge badge-important" ng-bind="reminds.length" ng-show="reminds.length>0"></span>
             </a>
 
@@ -24,7 +24,7 @@ class ONESRemindHTMLBehavior extends Behavior {
                 </li>
                 <li ng-bind="'lang.messages.no_unread_notification'|lang" ng-show="reminds.length<=0"></li>
             </ul>
-        </li>
+        </span>
 EOF;
 
     }

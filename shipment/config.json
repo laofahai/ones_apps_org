@@ -7,7 +7,7 @@
     "navs": {
         "stock": {
             "childs": {
-                "express_bill" : "shipment/list/express"
+                "express_bill" : "shipment/list/express,truck"
             }
         }
     }

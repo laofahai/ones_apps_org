@@ -10,8 +10,8 @@
     "navs": {
         "produce": {
             "childs" : {
-                "produce_plan" : "produce/list/producePlan",
-                "produce_plan_detail": "produce/list/producePlanDetail"
+                "produce_plan" : "produce/list/producePlan,retweet",
+                "produce_plan_detail": "produce/list/producePlanDetail,th-list"
             },
             "icon" : "retweet"
         },

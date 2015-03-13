@@ -1,17 +1,17 @@
 <pageactions></pageactions>
 <div class="billContainer">
-    <form name="stockinScript" ng-keydown="doKeydown($event);" novalidate>
+    <form name="stockinScript" ng-keydown="doKeydown($event);" class="form-inline" novalidate>
         <div class="billHeader">
             <div class="row">
                 <div class="col-sm-3">
                     <label>{{'lang.subject'|lang}}: </label>
-                    <input type="text" class="input-medium" ng-model="formMetaData.subject" required />
+                    <input type="text" class="form-control" ng-model="formMetaData.subject" required />
                 </div>
                 <div class="col-sm-4">
                     <label>{{'lang.dateline'|lang}}: </label>
-                    <span class="input-icon input-icon-right">
-                        <input type="datetime-local" placeholder="yyyy-mm-dd HH:mm" name="dateline" ng-model="formMetaData.dateline" />
-                        <i class="fa-time gray"></i>
+                    <span class="input-group span2">
+                        <input type="datetime-local" class="form-control" name="dateline" ng-model="formMetaData.dateline" />
+                        <div class="input-group-addon"><i class="fa fa-calendar gray"></i></div>
                     </span>
                 </div>
                 <div class="col-sm-2">
@@ -27,20 +27,20 @@
             <bill config="config"></bill>
         </div>
         <div class="billFooter clearfix">
-            <div class="row form-group">
+            <div class="row mt-10">
                 <label class="col-sm-1 text-right" ng-bind="'lang.memo'|lang"></label>
                 <div class="col-sm-11">
-                    <input type="text" ng-model="formMetaData.memo" class="width-100" />
+                    <input type="text" ng-model="formMetaData.memo" class="width-100 form-control" />
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-10">
                 <div class="col-sm-1 text-right" ng-bind="'lang.sponsor'|lang"></div>
                 <div class="col-sm-8">
                     <span ng-bind="$parent.userInfo.truename"></span>
                 </div>
                 <div class="col-sm-3 text-right">
-                    <button type="button" class="btn btn-sm btn-primary" ng-click="doSubmit();" ng-bind="'lang.actions.submit'|lang"></button>
-                    <button type="button" class="btn btn-sm" onclick="history.go(-1);" ng-bind="'lang.actions.return'|lang"></button>
+                    <button type="button" class="btn btn-primary" ng-click="doSubmit();" ng-bind="'lang.actions.submit'|lang"></button>
+                    <button type="button" class="btn" onclick="history.go(-1);" ng-bind="'lang.actions.return'|lang"></button>
                 </div>
             </div>
 

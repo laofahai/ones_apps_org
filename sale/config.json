@@ -13,9 +13,9 @@
         "sale" : {
             "icon": "pencil",
             "childs" : {
-                "add_new_orders": "sale/addBill/orders",
-                "orders": "sale/list/orders",
-                "returns": "sale/list/returns"
+                "add_new_orders": "sale/addBill/orders,plus-square",
+                "orders": "sale/list/orders,th-list",
+                "returns": "sale/list/returns,mail-reply"
             }
         }
     }

@@ -58,12 +58,14 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="row" ng-include="'common/base/views/printFooter.html'"></div>
     </div>
 </div>
 
 <div class="row text-center">
     <button class="btn btn-primary btn-sm hidden-print" ng-click="doPrint()">
-        <i class="icon fa-print"></i>
+        <i class="fa fa-print"></i>
         {{'lang.actions.print'|lang}}
     </button>
 </div>

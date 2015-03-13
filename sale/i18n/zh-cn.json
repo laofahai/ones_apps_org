@@ -52,7 +52,10 @@
             "sale": "销售类型",
             "returns": "退货类型"
         },
+        
+        "already_include_tax_input": "已含税款",
 
+        "tax_amount": "税款",
         "sale.orders": "%s订单",
         "sale.returns": "%s销售退货单",
         "sale.ordersdetail.read": "查看订单详情"
